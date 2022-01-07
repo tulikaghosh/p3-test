@@ -1,5 +1,6 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TokenStorageService } from '../token-storage.service';
 import { User } from '../user.model';
 import { UserService } from '../user.service';
@@ -51,7 +52,7 @@ export class ProfileComponent implements OnInit {
   errorMsg = "";
   
 
-  constructor(private token: TokenStorageService, private userService: UserService) { }
+  constructor(private token: TokenStorageService,private router:Router, private userService: UserService) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.token.getToken();
@@ -61,20 +62,13 @@ export class ProfileComponent implements OnInit {
       this.currentUser = this.token.getUser();
     }
     if (this.isLoggedIn) {
-      const user = this.token.getUser();
-      this.roles = user.roles;
-      this.username = user.username;
-      this.email = user.email;
-      this.first_name = user.first_name;
-      this.last_name = user.last_name;
-      this.address = user.address;
-      this.contact = user.contact;
-      this.password = user.password;
+      this.currentUser = this.token.getUser();
+      
 
 
       this.showAdmin = this.roles.includes('ROLE_ADMIN');
     }
-    this.currentUser = this.token.getUser();
+   // this.updatedUser();
   }
 
   // getuserInfo() {
@@ -104,15 +98,18 @@ export class ProfileComponent implements OnInit {
     console.log(this.editUser)
     this.userService.updateUserService(this.editUser).subscribe(
       (response) => {
-      
-        console.log(response);
+      this.currentUser = response
+     // this.router.navigate(['profile']);
+    //  this.reloadPage();        
+      console.log(response);
       },
     (error)=> {
         console.log(error);
       }
     );
   }
-
+reloadPage(): void{
+  window.location.reload();}
   /* myFunction() {
     var x = document.getElementById("myDIV");
     if (x.style.display === "none") {

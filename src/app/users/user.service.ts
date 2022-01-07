@@ -13,6 +13,6 @@ export class UserService {
   constructor(private http : HttpClient) { }
 
   updateUserService(updateUser: User):Observable <User>{
-   return this.http.put<User>(this.baseUrl+"/"+updateUser.user_id,updateUser);
+   return this.http.put<User>(this.baseUrl+"/users/"+updateUser.user_id,updateUser);
   }
 }

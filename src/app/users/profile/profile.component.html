@@ -175,7 +175,8 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                {{mainUser.first_name}}    
+                                {{currentUser.first_name}}    
+                                   
                             </td>
                         </tr>
                         <tr>        
@@ -186,7 +187,7 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                {{mainUser.last_name}}
+                                {{currentUser.last_name}}
                             </td>
                         </tr>
 
@@ -198,7 +199,7 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                {{mainUser.address}}
+                                {{currentUser.address}}
                             </td>
                         </tr>
 
@@ -210,7 +211,7 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                {{mainUser.contact}}
+                                {{currentUser.contact}}
                             </td>
                         </tr>
     
@@ -222,7 +223,7 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                {{mainUser.username}} 
+                                {{currentUser.username}} 
                             </td>
                         </tr>
                         <tr>        
@@ -233,7 +234,7 @@
                                 </strong>
                             </td>
                             <td class="text-primary">
-                                {{mainUser.email}}
+                                {{currentUser.email}}
                             </td>
                         </tr>                   
                     </tbody>
@@ -251,9 +252,10 @@
              class="btn btn-primary"
              (click)="toggleAdd()">Update
           </button>  -->
+          
 
-         <!-- <div *ngIf="flag" > -->
-          <div>
+         <div *ngIf="flag" > 
+         <!-- <div> -->
           <form #updateForm="ngForm" class="form-inline tm-5" (submit)="updatedUser()">
                <div id="myDIV" class="form-group">
                  <label for="user_id">User ID :</label>
@@ -290,13 +292,13 @@
                </div>
                <div class="form-group">
                      <label for="password">Password</label>
-                    <!-- <input type="text" 
+                     <input type="text" 
                      class="form-control" 
                      id="password"  
                      name="password"
-                     [(ngModel)]="editUser.password"> -->
+                     [(ngModel)]="editUser.password"> 
 
-                       {{ editUser.password }}
+                      <!-- {{ editUser.password }} -->
                </div> 
                <div class="form-group">
                      <label for="username">Username</label>
@@ -322,14 +324,18 @@
                                 name="contact"
                                 [(ngModel)]="editUser.contact">
                </div>
+               <button
+               type="submit" 
+               class="btn btn-primary mb-2">Update</button>
+           </form>
+         </div>
 
-               <div class="card-footer">
-                <button 
-                      type="submit" 
-                      
-                      class="btn mr-5">Update</button>
-            </div>
-             </form>
-            </div>
+          <div>
+            <button 
+                  type="submit" 
+                  class="btn btn-primary mr-2"
+                  (click)="toggleAdd()" 
+                  >Update</button>
+          </div>
              </div>
            
