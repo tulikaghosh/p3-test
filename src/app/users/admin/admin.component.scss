@@ -1,0 +1,38 @@
+#addProdBtn{
+  margin-left: 80%;
+  margin-right: 16px;
+  padding: 16px;
+}
+.table {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #424242;
+  border-style: dashed;
+  border-color: black;
+}
+tr {
+  color: blanchedalmond;
+  text-align: center;
+  font-weight: bold;
+}
+td {
+  color: whitesmoke;
+  font-weight: bold;
+}
+.btn-success {
+  background-color: black;
+  font-weight: bold;
+}
+.btn-info {
+  background-color: darkslateblue;
+  font-weight: bold;
+  color: bisque;
+}
+.btn-danger {
+  font-weight: bold;
+  color: bisque;
+}
+.modal-content {
+  background-color: darkgray;
+}

@@ -1,0 +1,295 @@
+<div class="scroll">
+  <br>
+  <div id="addProdBtn" class="d-flex">
+    <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal4">Add
+      Products</button> -->
+    <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal2">Add
+           Discount Products</button> -->
+  </div>
+  <br><br><br><br>
+  <h1>Admin Product Inventory </h1>
+  <!-- Create the table-->
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th scope="col">Product Id </th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Product Category</th>
+        <!-- <th scope="col">Product  Description</th> -->
+        <th scope="col">Product Percentage</th>
+        <th scope="col">Product Cost</th>
+        <!-- <th scope="col">Product  Percentage</th> -->
+        <th scope="col">Product Quantity</th>
+        <th scope="col">Product SKU</th>
+        <!-- <th scope="col">Product  Discount Description</th> -->
+        <!-- update  image with S3 Image Feature here -->
+
+        <th scope="col">Product Image</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr *ngFor="let row of allDiscountProducts">
+        <td> {{row.productId}}</td>
+        <td>{{row.productName}}</td>
+        <td>{{row.productCategory}}</td>
+        <!-- <td>
+                          Div is for wrapping up long text
+                        in table cell 
+                        <div style="width: 300px; word-wrap: break-word;">
+                            {{row.productDescription}}</div> 
+                    </td> -->
+        <td>%{{row.discountPercentage}}</td>
+        <td>{{row.productCost-row.productCost*row.discountPercentage | currency }}</td>
+        <!-- <td>{{row.product | currency}}</td> -->
+        <td>{{row.productQty}}</td>
+        <td>{{row.productSku}}</td>
+        <td>{{row.imageUrl}}</td>
+        <!-- add more if needed-->
+        <td> <button (click)="onDiscountEditRow(row)" type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#exampleModal3" class="btn btn-info">Edit Discount</button>
+        </td>
+        <td> <button (click)="deleteDiscountProducts(row.discountId)" type="button" class="btn btn-secondary"
+            data-bs-toggle="" class="btn btn-info">Remove Discount</button>
+        </td>
+      </tr>
+      <tr *ngFor="let row of allProducts">
+        <td> {{row.productId}}</td>
+        <td>{{row.productName}}</td>
+        <td>{{row.productCategory}}</td>
+        <td>
+          <!-- Div is for wrapping up long text
+                        in table cell-->
+          <!-- <div style="width: 300px; word-wrap: break-word;">
+                            {{row.productDescription}}</div> -->
+        </td>
+        <td>{{row.productCost | currency}}</td>
+        <!-- <td>{{row.product | currency}}</td> -->
+        <td>{{row.productQty}}</td>
+        <td>{{row.productSku}}</td>
+        <td>{{row.imageUrl}}</td>
+        <!-- add more if needed-->
+        <td> <button (click)="onEditRow(row)" type="button" class="btn btn-success" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" class="btn btn-info">Edit Product</button>
+        </td>
+        <td> <button (click)="deleteProduct(row.productId)" type="button" class="btn btn-secondary" data-bs-toggle=""
+            class="btn btn-info">Remove Product</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal to edit Regular Product -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValue">
+            <div class="mb-3">
+              <label for="product_sku" class="form-label">Product SKU</label>
+              <input type="text" formControlName="product_sku" class="form-control" id="InputProductSku"
+                aria-describedby="productSkuHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_name" class="form-label">Product Name</label>
+              <input type="text" formControlName="product_name" class="form-control" id="InputProductName"
+                aria-describedby="productNameHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_category" class="form-label">Product Category</label>
+              <input type="text" formControlName="product_category" class="form-control" id="InputProductCategory"
+                aria-describedby="productCategoryHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_cost" class="form-label">Product Cost</label>
+              <input type="text" formControlName="product_cost" class="form-control" id="InputProductCost"
+                aria-describedby="productCostHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_qty" class="form-label">Product Quantity</label>
+              <input type="text" formControlName="product_qty" class="form-control" id="InputProductQty "
+                aria-describedby="productQtyHelp">
+            </div>
+            <div class="mb-3">
+              <!-- <label for="image_url" class="form-label">Product Img Url</label>
+                <input type="text" formControlName="image_url" class="form-control" id="InputProductImgUrl "
+                  aria-describedby="productImgUrlHelp"> -->
+              <label for="image_url" class="form-label"> Select Img File</label>
+              <input #imageInput type="file" formControlName="image_url"
+                class="form-control" id="InputProductImgUrl" aria-describedby="productImgUrlHelp" accept="image/*"
+                (change)="uploadImage(imageInput)">
+
+            </div>
+            <div class="mb-3">
+              <label for="product_description" class="form-label">Product description</label>
+              <textarea type="text" formControlName="product_description" class="form-control"
+                id="InputProductDescription " aria-describedby="productDescriptionHelp">
+                  </textarea>
+            </div>
+            <!--  add input text more fields later if needed
+              <div class="mb-3">
+                <label for="product_" class="form-label">Product </label>
+                <input type="text" formControlName="product_" class="form-control" id="InputProduct "
+                  aria-describedby="product Help">
+              </div>
+              -->
+            <!-- Connect to S3 Image Feature for uploading -->
+          </form>
+        </div><!-- modal div -->
+        <div class="modal-footer">
+          <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button"  (click)="addProducts()"
+            class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+            Discount Info
+          </button>
+          <button type="button"  (click)="updateProducts()" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal to add Regular Product -->
+  <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValue">
+            <div class="mb-3">
+              <label for="product_sku" class="form-label">Product SKU</label>
+              <input type="text" formControlName="product_sku" class="form-control" id="InputProductSku"
+                aria-describedby="productSkuHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_name" class="form-label">Product Name</label>
+              <input type="text" formControlName="product_name" class="form-control" id="InputProductName"
+                aria-describedby="productNameHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_category" class="form-label">Product Category</label>
+              <input type="text" formControlName="product_category" class="form-control" id="InputProductCategory"
+                aria-describedby="productCategoryHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_cost" class="form-label">Product Cost</label>
+              <input type="text" formControlName="product_cost" class="form-control" id="InputProductCost"
+                aria-describedby="productCostHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_qty" class="form-label">Product Quantity</label>
+              <input type="text" formControlName="product_qty" class="form-control" id="InputProductQty "
+                aria-describedby="productQtyHelp">
+            </div>
+            <div class="mb-3">
+              <!-- <label for="image_url" class="form-label">Product Img Url</label>
+              <input type="text" formControlName="image_url" class="form-control" id="InputProductImgUrl "
+                aria-describedby="productImgUrlHelp"> -->
+              <label for="image_url" class="form-label"> Select Img File</label>
+              <input #imageInput type="file" formControlName="image_url" class="form-control" id="InputProductImgUrl"
+                aria-describedby="productImgUrlHelp" accept="image/*">
+            </div>
+            <div class="mb-3">
+              <label for="product_description" class="form-label">Product description</label>
+              <textarea type="text" formControlName="product_description" class="form-control"
+                id="InputProductDescription " aria-describedby="productDescriptionHelp">
+                </textarea>
+            </div>
+            <!--  add input text more fields later if needed
+            <div class="mb-3">
+              <label for="product_" class="form-label">Product </label>
+              <input type="text" formControlName="product_" class="form-control" id="InputProduct "
+                aria-describedby="product Help">
+            </div>
+            -->
+            <!-- Connect to S3 Image Feature for uploading -->
+          </form>
+        </div><!-- modal div -->
+        <div class="modal-footer">
+          <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="addProducts()" (click)="uploadImage(imageInput)"
+            class="btn btn-primary">Add</button>
+          <!-- <button type="button" (click) = "addDiscountProducts()" class="btn btn-primary">Add Discount</button> -->
+          <!-- <button type="button"
+         class="btn btn-info"
+         data-bs-toggle="modal"
+          data-bs-target="#exampleModal2">
+          Discount Info
+      </button>
+        <button type="button" (click)="updateProducts()" class="btn btn-primary">Update</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discount Products Section  Modal form -->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Discount</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValueDiscount">
+            <div class="mb-3">
+              <label for="product_percentage" class="form-label">Product Discount Percentage</label>
+              <input type="text" formControlName="discount_percentage" class="form-control" id="InputProductPercentage "
+                aria-describedby="productPercentageHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_discount_description" class="form-label">Product Discount Description</label>
+              <textarea type="text" formControlName="discount_description" class="form-control"
+                id="InputProductDescription " aria-describedby="productDescriptionHelp">
+                </textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="addDiscountProducts()" class="btn btn-primary">Add Discount</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Discount Products Section  Modal form -->
+  <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Discount</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValueDiscount">
+            <div class="mb-3">
+              <label for="product_percentage" class="form-label">Product Discount Percentage</label>
+              <input type="text" formControlName="discount_percentage" class="form-control" id="InputProductPercentage "
+                aria-describedby="productPercentageHelp">
+            </div>
+            <div class="mb-3">
+              <label for="product_discount_description" class="form-label">Product Discount Description</label>
+              <textarea type="text" formControlName="discount_description" class="form-control"
+                id="InputProductDescription " aria-describedby="productDescriptionHelp">
+                  </textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="updateDiscountProducts()" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div><!-- Scroll-->
